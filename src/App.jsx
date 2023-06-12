@@ -6,6 +6,7 @@ import {Navigate, NavLink, Route, Routes} from "react-router-dom";
 import GetWashingAssistants from "./components/GetWashingAssistants.jsx";
 import GetBookings from "./components/GetBookings.jsx";
 import WashingAssistantForm from "./components/WashingAssistantForm.jsx";
+import MakeBooking from "./components/MakeBooking.jsx";
 
 
 function App() {
@@ -64,6 +65,9 @@ function App() {
                                 <NavLink to="/get-bookings">My Bookings</NavLink>
                             </li>
                             <li>
+                                <NavLink to="/make-booking">Make Booking</NavLink>
+                            </li>
+                            <li>
                                 <NavLink to="/profile-page">Profile</NavLink>
                             </li>
                             <li>
@@ -120,11 +124,16 @@ function App() {
                 <Route exact path="/" element={<Home/>}/>
 
                 <Route path="/profile-page" element={<LoggedIn user={user} logout={logout} loggedIn={loggedIn}/>}/>
-
                 {!loggedIn ? (
-                    <Route path="/get-bookings" element={<Navigate to="/"/>}/>
+                    <>
+                        <Route path="/get-bookings" element={<Navigate to="/"/>}/>
+                        <Route path="/make-booking" element={<Navigate to="/"/>}/>
+                    </>
                 ) : (
-                    <Route path="/get-bookings" element={<GetBookings/>}/>
+                    <>
+                        <Route path="/get-bookings" element={<GetBookings/>}/>
+                        <Route path="/make-booking" element={<MakeBooking/>}/>
+                    </>
                 )}
 
                 {user.roles === 'admin' && (
@@ -133,6 +142,7 @@ function App() {
             </Routes>
         </div>
     );
+
 }
 
 export default App;

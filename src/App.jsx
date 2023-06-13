@@ -2,12 +2,22 @@ import React, {useState} from "react"
 import facade from "./apiFacade.js";
 import LogIn from "./components/LoginForm.jsx";
 import LoggedIn from "./components/LoggedIn.jsx";
-import {Navigate, NavLink, Route, Routes} from "react-router-dom";
+import {Navigate, NavLink, Route, Router, Routes} from "react-router-dom";
 import GetWashingAssistants from "./components/GetWashingAssistants.jsx";
 import GetBookings from "./components/GetBookings.jsx";
 import WashingAssistantForm from "./components/WashingAssistantForm.jsx";
 import MakeBooking from "./components/MakeBooking.jsx";
+import * as PropTypes from "prop-types";
+import WashingAssistantList from "./components/WashingAssistantList.jsx";
+import UpdateWashingAssistant from "./components/UpdateWashingAssistant.jsx";
+import UpdateBooking from "./components/UpdateBookings.jsx";
 
+
+function Switch(props) {
+    return null;
+}
+
+Switch.propTypes = {children: PropTypes.node};
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(localStorage.getItem('setLoggedIn') || false);
@@ -52,6 +62,10 @@ function App() {
                                     <li>
                                         <NavLink to="/washing-assistant-form">Washing Assistant Form</NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink to="/washing-assistants">All Washing Assistants</NavLink>
+                                    </li>
+
                                     {/*<li>
                                         <NavLink to="/bookingform">Booking Form</NavLink>
                                     </li>
@@ -66,6 +80,9 @@ function App() {
                             </li>
                             <li>
                                 <NavLink to="/make-booking">Make Booking</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/update-bookings">Update Booking</NavLink>
                             </li>
                             <li>
                                 <NavLink to="/profile-page">Profile</NavLink>
@@ -119,29 +136,39 @@ function App() {
 
     return (
         <div>
-            <Header/>
+            <Header />
             <Routes>
-                <Route exact path="/" element={<Home/>}/>
+                <Route exact path="/" element={<Home />} />
 
-                <Route path="/profile-page" element={<LoggedIn user={user} logout={logout} loggedIn={loggedIn}/>}/>
+                <Route path="/profile-page" element={<LoggedIn user={user} logout={logout} loggedIn={loggedIn} />} />
                 {!loggedIn ? (
                     <>
-                        <Route path="/get-bookings" element={<Navigate to="/"/>}/>
-                        <Route path="/make-booking" element={<Navigate to="/"/>}/>
+                        <Route path="/get-bookings" element={<Navigate to="/" />} />
+                        <Route path="/make-booking" element={<Navigate to="/" />} />
                     </>
                 ) : (
                     <>
-                        <Route path="/get-bookings" element={<GetBookings/>}/>
-                        <Route path="/make-booking" element={<MakeBooking/>}/>
+                        <Route path="/get-bookings" element={<GetBookings />} />
+                        <Route path="/make-booking" element={<MakeBooking />} />
                     </>
                 )}
-
                 {user.roles === 'admin' && (
-                    <Route exact path="/washing-assistant-form" element={<WashingAssistantForm/>}/>
+                    <Route
+                        path="/update-bookings" element={<UpdateBooking />} />
                 )}
+
+                {user.roles === 'admin' && <Route exact path="/washing-assistant-form" element={<WashingAssistantForm />} />}
+
+                {/*{user.roles === 'admin' && (
+                    <Route path="/washing-assistants">
+                        <Route index element={<WashingAssistantList />} />
+                        <Route path=":id/edit" element={<UpdateWashingAssistant />} />
+                    </Route>
+                )}*/}
             </Routes>
         </div>
     );
+
 
 }
 

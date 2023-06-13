@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { WashingAssistantURL, BookingURL } from '../Setting.js';
+import React, {useState, useEffect} from 'react';
+import {WashingAssistantURL, BookingURL} from '../Setting.js';
+import {useNavigate} from "react-router-dom";
 
 const MakeBooking = () => {
+    const history = useNavigate();
+
     const [userName, setUserName] = useState('');
     const [assistantNames, setAssistantNames] = useState([]);
     const [washingAssistants, setWashingAssistants] = useState([]);
@@ -41,6 +44,13 @@ const MakeBooking = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Get the washing assistant IDs
+        const assistantIds = selectedAssistants.map((assistantName) => {
+            const assistant = washingAssistants.find((assistant) => assistant.name === assistantName);
+            return assistant.id;
+        });
+
         // Perform the submission logic here, e.g., send a POST request to the backend API
         const bookingData = {
             userName: userName,
@@ -67,6 +77,8 @@ const MakeBooking = () => {
                 setDate('');
                 setTime('');
                 setDuration('');
+                //redirect to the home page
+                history('/');
             })
             .catch((error) => console.error('Error creating booking:', error));
     };
@@ -95,22 +107,22 @@ const MakeBooking = () => {
                         ))}
                     </select>
                 </div>
-                <br />
+                <br/>
                 <label>
                     Date:
-                    <input type="text" value={date} onChange={(e) => setDate(e.target.value)} />
+                    <input type="text" value={date} onChange={(e) => setDate(e.target.value)}/>
                 </label>
-                <br />
+                <br/>
                 <label>
                     Time:
-                    <input type="text" value={time} onChange={(e) => setTime(e.target.value)} />
+                    <input type="text" value={time} onChange={(e) => setTime(e.target.value)}/>
                 </label>
-                <br />
+                <br/>
                 <label>
                     Duration:
-                    <input type="text" value={duration} onChange={(e) => setDuration(e.target.value)} />
+                    <input type="text" value={duration} onChange={(e) => setDuration(e.target.value)}/>
                 </label>
-                <br />
+                <br/>
                 <button type="submit">Submit</button>
             </form>
         </div>

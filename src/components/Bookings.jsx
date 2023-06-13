@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function Bookings(date, time, duration) {
+function Bookings(date, time, duration, id) {
     const [expanded, setExpanded] = useState(false);
 
     const toggleExpanded = () => {
